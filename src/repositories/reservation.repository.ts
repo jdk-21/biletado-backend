@@ -8,9 +8,7 @@ export class ReservationRepository extends DefaultCrudRepository<
   typeof Reservation.prototype.id,
   ReservationRelations
 > {
-  constructor(
-    @inject('datasources.postgres') dataSource: PostgresDataSource,
-  ) {
+  constructor(@inject('datasources.postgres') dataSource: PostgresDataSource) {
     super(Reservation, dataSource);
   }
 }

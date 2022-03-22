@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {inject} from '@loopback/core';
 import {
-  get, Request, response,
-  ResponseObject, RestBindings
+  get,
+  Request,
+  response,
+  ResponseObject,
+  RestBindings,
 } from '@loopback/rest';
 
 /**
@@ -36,7 +39,7 @@ const PING_RESPONSE: ResponseObject = {
  * A simple controller to bounce back http requests
  */
 export class PingController {
-  constructor(@inject(RestBindings.Http.REQUEST) private req: Request) { }
+  constructor(@inject(RestBindings.Http.REQUEST) private req: Request) {}
 
   // Map to `GET /ping`
   @get('/ping')

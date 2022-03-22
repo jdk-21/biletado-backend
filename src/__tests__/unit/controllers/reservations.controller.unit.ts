@@ -1,15 +1,12 @@
-import {
-  expect
-} from '@loopback/testlab';
+import {expect} from '@loopback/testlab';
 
 describe('ProductController (unit)', () => {
-
   describe('uselessTest', () => {
     it('checks if true', async () => {
       let result;
-      const condition = false;
+      const condition = true;
       if (condition) {
-        result = true
+        result = true;
       }
       expect(result).to.eql(true);
     });

@@ -5,12 +5,18 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where
+  Where,
 } from '@loopback/repository';
 import {
-  del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
-  response
+  del,
+  get,
+  getModelSchemaRef,
+  param,
+  patch,
+  post,
+  put,
+  requestBody,
+  response,
 } from '@loopback/rest';
 import {Reservation} from '../models';
 import {ReservationRepository} from '../repositories';
@@ -19,7 +25,7 @@ export class ReservationsController {
   constructor(
     @repository(ReservationRepository)
     public reservationRepository: ReservationRepository,
-  ) { }
+  ) {}
 
   @post('/reservations')
   @response(200, {
@@ -39,8 +45,6 @@ export class ReservationsController {
     })
     reservation: Omit<Reservation, 'id'>,
   ): Promise<Reservation> {
-    console.log("blub");
-    console.log(reservation);
     return this.reservationRepository.create(reservation);
   }
 
@@ -103,7 +107,8 @@ export class ReservationsController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Reservation, {exclude: 'where'}) filter?: FilterExcludingWhere<Reservation>
+    @param.filter(Reservation, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Reservation>,
   ): Promise<Reservation> {
     return this.reservationRepository.findById(id, filter);
   }

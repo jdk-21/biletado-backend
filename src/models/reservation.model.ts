@@ -35,7 +35,6 @@ export class Reservation extends Entity {
   })
   room_id: string;
 
-
   constructor(data?: Partial<Reservation>) {
     super(data);
   }
