@@ -7,11 +7,11 @@ describe('ProductController (unit)', () => {
   describe('uselessTest', () => {
     it('checks if true', async () => {
       let result;
-      const condition = true;
+      const condition = false;
       if (condition) {
         result = true
       }
-      expect(result).to.eql(result);
+      expect(result).to.eql(true);
     });
   });
 });
