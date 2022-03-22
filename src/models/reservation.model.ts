@@ -1,6 +1,13 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model({
+  settings: {
+    postgresql: {
+      // specify custom table name
+      table: 'reservations',
+    },
+  },
+})
 export class Reservation extends Entity {
   @property({
     type: 'string',
