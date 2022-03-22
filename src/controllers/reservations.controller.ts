@@ -1,21 +1,16 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Reservation} from '../models';
 import {ReservationRepository} from '../repositories';
@@ -23,8 +18,8 @@ import {ReservationRepository} from '../repositories';
 export class ReservationsController {
   constructor(
     @repository(ReservationRepository)
-    public reservationRepository : ReservationRepository,
-  ) {}
+    public reservationRepository: ReservationRepository,
+  ) { }
 
   @post('/reservations')
   @response(200, {
@@ -44,6 +39,8 @@ export class ReservationsController {
     })
     reservation: Omit<Reservation, 'id'>,
   ): Promise<Reservation> {
+    console.log("blub");
+    console.log(reservation);
     return this.reservationRepository.create(reservation);
   }
 
