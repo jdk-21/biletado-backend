@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Storeys} from './storeys.model';
 

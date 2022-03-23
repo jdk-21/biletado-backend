@@ -13,12 +13,14 @@ import {
   response
 } from '@loopback/rest';
 import {Storeys} from '../models';
-import {StoreysRepository} from '../repositories';
+import {RoomsRepository, StoreysRepository} from '../repositories';
 
 export class StoreysController {
   constructor(
     @repository(StoreysRepository)
     public storeysRepository: StoreysRepository,
+    @repository(RoomsRepository)
+    public roomsRepository: RoomsRepository,
   ) { }
 
   @post('/assets/storeys')
@@ -140,13 +142,12 @@ export class StoreysController {
     description: 'Storeys DELETE success',
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
-    try {
-      await this.storeysRepository.deleteById(id);
-    }
 
-    catch (e: unknown) {
-      console.log(e, "error");
-      throw new HttpErrors.UnprocessableEntity("blub");
+    const count = await this.roomsRepository.count({storey_id: id})
+    if (count.count > 0) {
+      throw new HttpErrors.UnprocessableEntity("Not empty");
+    } else {
+      await this.storeysRepository.deleteById(id);
     }
   }
 }
