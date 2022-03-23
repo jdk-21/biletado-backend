@@ -3,11 +3,18 @@ import {Entity, model, property} from '@loopback/repository';
 @model()
 export class Buildings extends Entity {
   @property({
-    type: 'string',
     id: true,
+    type: 'String',
+    required: false,
+    // settings below are needed
     generated: true,
+    useDefaultIdType: false,
+    postgresql: {
+      dataType: 'uuid',
+    },
   })
-  id?: string;
+  id: string;
+
 
   @property({
     type: 'string',

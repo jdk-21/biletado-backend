@@ -9,7 +9,7 @@ const config = {
   port: 5432,
   user: 'postgres',
   password: 'postgres',
-  database: 'reservations',
+  database: 'assets',
 };
 
 // Observe application's life cycle to disconnect the datasource when
@@ -19,8 +19,7 @@ const config = {
 @lifeCycleObserver('datasource')
 export class PostgresDataSource
   extends juggler.DataSource
-  implements LifeCycleObserver
-{
+  implements LifeCycleObserver {
   static dataSourceName = 'postgres';
   static readonly defaultConfig = config;
 
