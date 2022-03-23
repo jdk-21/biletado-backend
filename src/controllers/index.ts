@@ -3,3 +3,4 @@ export * from './reservations.controller';
 export * from './buildings.controller';
 export * from './storeys.controller';
 export * from './storeys-buildings.controller';
+export * from './rooms-storeys.controller';
