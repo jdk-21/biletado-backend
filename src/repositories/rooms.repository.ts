@@ -1,5 +1,6 @@
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+/* eslint-disable @typescript-eslint/naming-convention */
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, repository} from '@loopback/repository';
 import {PostgresDataSource} from '../datasources';
 import {Rooms, RoomsRelations, Storeys} from '../models';
 import {StoreysRepository} from './storeys.repository';
