@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/naming-convention */
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -9,8 +11,10 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
-  response
+  getModelSchemaRef, HttpErrors, param, post, put, requestBody,
+  Response,
+  response,
+  RestBindings
 } from '@loopback/rest';
 import {Storeys} from '../models';
 import {RoomsRepository, StoreysRepository} from '../repositories';
@@ -21,10 +25,11 @@ export class StoreysController {
     public storeysRepository: StoreysRepository,
     @repository(RoomsRepository)
     public roomsRepository: RoomsRepository,
+    @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
   @post('/assets/storeys')
-  @response(200, {
+  @response(201, {
     description: 'Storeys model instance',
     content: {'application/json': {schema: getModelSchemaRef(Storeys)}},
   })
@@ -40,7 +45,18 @@ export class StoreysController {
     })
     storeys: Storeys,
   ): Promise<Storeys> {
-    return this.storeysRepository.create(storeys);
+    if (storeys.id === undefined) {
+      this.response.status(201);
+      return this.storeysRepository.create(storeys);
+    }
+    else {
+      console.log("blub");
+      // workaround because this is not a standard operation
+      // behaves like put
+      await this.storeysRepository.replaceById(storeys.id, storeys);
+      this.response.status(200);
+      return storeys;
+    }
   }
 
   @get('/assets/storeys/count')
@@ -72,25 +88,6 @@ export class StoreysController {
     return this.storeysRepository.find(filter);
   }
 
-  @patch('/assets/storeys')
-  @response(200, {
-    description: 'Storeys PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Storeys, {partial: true}),
-        },
-      },
-    })
-    storeys: Storeys,
-    @param.where(Storeys) where?: Where<Storeys>,
-  ): Promise<Count> {
-    return this.storeysRepository.updateAll(storeys, where);
-  }
-
   @get('/assets/storeys/{id}')
   @response(200, {
     description: 'Storeys model instance',
@@ -105,24 +102,6 @@ export class StoreysController {
     @param.filter(Storeys, {exclude: 'where'}) filter?: FilterExcludingWhere<Storeys>
   ): Promise<Storeys> {
     return this.storeysRepository.findById(id, filter);
-  }
-
-  @patch('/assets/storeys/{id}')
-  @response(204, {
-    description: 'Storeys PATCH success',
-  })
-  async updateById(
-    @param.path.string('id') id: string,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Storeys, {partial: true}),
-        },
-      },
-    })
-    storeys: Storeys,
-  ): Promise<void> {
-    await this.storeysRepository.updateById(id, storeys);
   }
 
   @put('/assets/storeys/{id}')

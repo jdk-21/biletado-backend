@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/naming-convention */
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -10,7 +12,9 @@ import {
 import {
   del, get,
   getModelSchemaRef, HttpErrors, param, post, put, requestBody,
-  response
+  Response,
+  response,
+  RestBindings
 } from '@loopback/rest';
 import {Buildings} from '../models';
 import {BuildingsRepository, StoreysRepository} from '../repositories';
@@ -21,6 +25,7 @@ export class BuildingsController {
     public buildingsRepository: BuildingsRepository,
     @repository(StoreysRepository)
     public storeysRepository: StoreysRepository,
+    @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
   @post('/assets/buildings')
@@ -40,7 +45,18 @@ export class BuildingsController {
     })
     buildings: Buildings,
   ): Promise<Buildings> {
-    return this.buildingsRepository.create(buildings);
+    if (buildings.id === undefined) {
+      this.response.status(201);
+      return this.buildingsRepository.create(buildings);
+    }
+    else {
+      console.log("blub");
+      // workaround because this is not a standard operation
+      // behaves like put
+      await this.buildingsRepository.replaceById(buildings.id, buildings);
+      this.response.status(200);
+      return buildings;
+    }
   }
 
   @get('/assets/buildings/count')

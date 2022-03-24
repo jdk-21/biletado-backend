@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/naming-convention */
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -10,7 +12,9 @@ import {
 import {
   del, get,
   getModelSchemaRef, param, post, put, requestBody,
-  response
+  Response,
+  response,
+  RestBindings
 } from '@loopback/rest';
 import {Rooms} from '../models';
 import {RoomsRepository} from '../repositories';
@@ -19,6 +23,7 @@ export class RoomsController {
   constructor(
     @repository(RoomsRepository)
     public roomsRepository: RoomsRepository,
+    @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
   @post('/rooms')
@@ -38,7 +43,18 @@ export class RoomsController {
     })
     rooms: Rooms,
   ): Promise<Rooms> {
-    return this.roomsRepository.create(rooms);
+    if (rooms.id === undefined) {
+      this.response.status(201);
+      return this.roomsRepository.create(rooms);
+    }
+    else {
+      console.log("blub");
+      // workaround because this is not a standard operation
+      // behaves like put
+      await this.roomsRepository.replaceById(rooms.id, rooms);
+      this.response.status(200);
+      return rooms;
+    }
   }
 
   @get('/rooms/count')
