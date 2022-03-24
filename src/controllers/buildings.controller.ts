@@ -9,7 +9,7 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, post, put, requestBody,
   response
 } from '@loopback/rest';
 import {Buildings} from '../models';
@@ -34,12 +34,11 @@ export class BuildingsController {
         'application/json': {
           schema: getModelSchemaRef(Buildings, {
             title: 'NewBuildings',
-            exclude: ['id'],
           }),
         },
       },
     })
-    buildings: Omit<Buildings, 'id'>,
+    buildings: Buildings,
   ): Promise<Buildings> {
     return this.buildingsRepository.create(buildings);
   }
@@ -73,25 +72,6 @@ export class BuildingsController {
     return this.buildingsRepository.find(filter);
   }
 
-  @patch('/assets/buildings')
-  @response(200, {
-    description: 'Buildings PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Buildings, {partial: true}),
-        },
-      },
-    })
-    buildings: Buildings,
-    @param.where(Buildings) where?: Where<Buildings>,
-  ): Promise<Count> {
-    return this.buildingsRepository.updateAll(buildings, where);
-  }
-
   @get('/assets/buildings/{id}')
   @response(200, {
     description: 'Buildings model instance',
@@ -106,24 +86,6 @@ export class BuildingsController {
     @param.filter(Buildings, {exclude: 'where'}) filter?: FilterExcludingWhere<Buildings>
   ): Promise<Buildings> {
     return this.buildingsRepository.findById(id, filter);
-  }
-
-  @patch('/assets/buildings/{id}')
-  @response(204, {
-    description: 'Buildings PATCH success',
-  })
-  async updateById(
-    @param.path.string('id') id: string,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Buildings, {partial: true}),
-        },
-      },
-    })
-    buildings: Buildings,
-  ): Promise<void> {
-    await this.buildingsRepository.updateById(id, buildings);
   }
 
   @put('/assets/buildings/{id}')
