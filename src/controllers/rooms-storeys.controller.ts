@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
-  repository,
+  repository
 } from '@loopback/repository';
 import {
-  param,
   get,
-  getModelSchemaRef,
+  getModelSchemaRef, param
 } from '@loopback/rest';
 import {
   Rooms,
-  Storeys,
+  Storeys
 } from '../models';
 import {RoomsRepository} from '../repositories';
 
@@ -19,6 +19,7 @@ export class RoomsStoreysController {
   ) { }
 
   @get('/rooms/{id}/storeys', {
+    'x-visibility': 'undocumented',
     responses: {
       '200': {
         description: 'Storeys belonging to Rooms',

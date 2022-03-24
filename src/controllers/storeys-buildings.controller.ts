@@ -18,6 +18,7 @@ export class StoreysBuildingsController {
   ) { }
 
   @get('/storeys/{id}/buildings', {
+    'x-visibility': 'undocumented',
     responses: {
       '200': {
         description: 'Buildings belonging to Storeys',
