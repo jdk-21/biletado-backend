@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Buildings} from './buildings.model';
 
 @model()
@@ -8,12 +8,7 @@ export class Storeys extends Entity {
     id: true,
     type: 'String',
     required: false,
-    // settings below are needed
-    generated: true,
-    useDefaultIdType: false,
-    postgresql: {
-      dataType: 'uuid',
-    },
+    generated: false,
   })
   id: string;
 

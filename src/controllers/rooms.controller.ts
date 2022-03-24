@@ -9,7 +9,7 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
+  getModelSchemaRef, param, post, put, requestBody,
   response
 } from '@loopback/rest';
 import {Rooms} from '../models';
@@ -32,12 +32,11 @@ export class RoomsController {
         'application/json': {
           schema: getModelSchemaRef(Rooms, {
             title: 'NewRooms',
-            exclude: ['id'],
           }),
         },
       },
     })
-    rooms: Omit<Rooms, 'id'>,
+    rooms: Rooms,
   ): Promise<Rooms> {
     return this.roomsRepository.create(rooms);
   }
@@ -71,25 +70,6 @@ export class RoomsController {
     return this.roomsRepository.find(filter);
   }
 
-  @patch('/rooms')
-  @response(200, {
-    description: 'Rooms PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Rooms, {partial: true}),
-        },
-      },
-    })
-    rooms: Rooms,
-    @param.where(Rooms) where?: Where<Rooms>,
-  ): Promise<Count> {
-    return this.roomsRepository.updateAll(rooms, where);
-  }
-
   @get('/rooms/{id}')
   @response(200, {
     description: 'Rooms model instance',
@@ -104,24 +84,6 @@ export class RoomsController {
     @param.filter(Rooms, {exclude: 'where'}) filter?: FilterExcludingWhere<Rooms>
   ): Promise<Rooms> {
     return this.roomsRepository.findById(id, filter);
-  }
-
-  @patch('/rooms/{id}')
-  @response(204, {
-    description: 'Rooms PATCH success',
-  })
-  async updateById(
-    @param.path.string('id') id: string,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Rooms, {partial: true}),
-        },
-      },
-    })
-    rooms: Rooms,
-  ): Promise<void> {
-    await this.roomsRepository.updateById(id, rooms);
   }
 
   @put('/rooms/{id}')

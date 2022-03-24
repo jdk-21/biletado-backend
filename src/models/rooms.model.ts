@@ -8,12 +8,7 @@ export class Rooms extends Entity {
     id: true,
     type: 'String',
     required: false,
-    // settings below are needed
-    generated: true,
-    useDefaultIdType: false,
-    postgresql: {
-      dataType: 'uuid',
-    },
+    generated: false,
   })
   id: string;
 

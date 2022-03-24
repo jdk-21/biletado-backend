@@ -34,12 +34,11 @@ export class StoreysController {
         'application/json': {
           schema: getModelSchemaRef(Storeys, {
             title: 'NewStoreys',
-            exclude: ['id'],
           }),
         },
       },
     })
-    storeys: Omit<Storeys, 'id'>,
+    storeys: Storeys,
   ): Promise<Storeys> {
     return this.storeysRepository.create(storeys);
   }
