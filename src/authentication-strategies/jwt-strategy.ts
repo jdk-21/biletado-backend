@@ -1,6 +1,6 @@
 //import {inject} from '@loopback/context';
 import {HttpErrors, Request} from '@loopback/rest';
-import {AuthenticationStrategy, TokenService} from '@loopback/authentication';
+import {AuthenticationStrategy} from '@loopback/authentication';
 import {securityId, UserProfile} from '@loopback/security';
 import axios from 'axios';
 import * as crypto from 'crypto';
