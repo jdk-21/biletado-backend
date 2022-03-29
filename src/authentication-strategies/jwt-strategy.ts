@@ -12,15 +12,16 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
   async authenticate(request: Request): Promise<UserProfile | undefined> {
     const token: string = this.extractCredentials(request);
     const verifyFunction = crypto.createVerify('RSA-SHA256');
+    const keyurl2: string = "http://" + "localhost" + "/auth/realms/" + "biletado";
     const keyurl: string = "http://" + process.env.KEYCLOAK_HOST + "/auth/realms/" + process.env.KEYCLOAK_REALM;
-    const response = await axios.get(keyurl).then(
+    const response = await axios.get(keyurl2).then(
       res => {
         return res
       }
     );
-    const PUB_KEY = "-----BEGIN CERTIFICATE-----" + response.data.public_key + "-----END CERTIFICATE-----";
+    const PUB_KEY = "-----BEGIN PUBLIC KEY-----\n" + response.data.public_key + "\n-----END PUBLIC KEY-----";
 
-
+  try{
     const jwtHeader = token.split('.')[0];
     const jwtPayload = token.split('.')[1];
     const jwtSignature = token.split('.')[2];
@@ -37,6 +38,10 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
       throw new HttpErrors.Unauthorized(`Authorization failed.`);
     }
   }
+  catch{
+      throw new HttpErrors.Unauthorized(`Authorization failed.`);
+  }
+}
 
   extractCredentials(request: Request): string {
     if (!request.headers.authorization) {

@@ -28,6 +28,7 @@ export class StoreysController {
     @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
+  @authenticate('jwt')
   @post('/assets/storeys')
   @response(201, {
     description: 'Storeys model instance',
@@ -104,6 +105,7 @@ export class StoreysController {
     return this.storeysRepository.findById(id, filter);
   }
 
+  @authenticate('jwt')
   @put('/assets/storeys/{id}')
   @response(204, {
     description: 'Storeys PUT success',
@@ -115,6 +117,7 @@ export class StoreysController {
     await this.storeysRepository.replaceById(id, storeys);
   }
 
+  @authenticate('jwt')
   @del('/assets/storeys/{id}')
   @response(204, {
     description: 'Storeys DELETE success',

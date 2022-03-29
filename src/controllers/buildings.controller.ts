@@ -29,6 +29,7 @@ export class BuildingsController {
     @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
+  @authenticate('jwt')
   @post('/assets/buildings')
   @response(200, {
     description: 'Buildings model instance',
@@ -60,7 +61,6 @@ export class BuildingsController {
     }
   }
 
-  @authenticate('jwt')
   @get('/assets/buildings/count')
   @response(200, {
     description: 'Buildings model count',
@@ -106,6 +106,7 @@ export class BuildingsController {
     return this.buildingsRepository.findById(id, filter);
   }
 
+  @authenticate('jwt')
   @put('/assets/buildings/{id}')
   @response(204, {
     description: 'Buildings PUT success',
@@ -117,6 +118,7 @@ export class BuildingsController {
     await this.buildingsRepository.replaceById(id, buildings);
   }
 
+  @authenticate('jwt')
   @del('/assets/buildings/{id}')
   @response(204, {
     description: 'Buildings DELETE success',

@@ -26,6 +26,7 @@ export class RoomsController {
     @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
+  @authenticate('jwt')
   @post('/rooms')
   @response(200, {
     description: 'Rooms model instance',
@@ -102,6 +103,7 @@ export class RoomsController {
     return this.roomsRepository.findById(id, filter);
   }
 
+  @authenticate('jwt')
   @put('/rooms/{id}')
   @response(204, {
     description: 'Rooms PUT success',
@@ -113,6 +115,7 @@ export class RoomsController {
     await this.roomsRepository.replaceById(id, rooms);
   }
 
+  @authenticate('jwt')
   @del('/rooms/{id}')
   @response(204, {
     description: 'Rooms DELETE success',
