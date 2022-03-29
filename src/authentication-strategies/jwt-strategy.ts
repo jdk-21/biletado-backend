@@ -28,8 +28,7 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     const jwtSignatureBase64 = base64.toBase64(jwtSignature);
     const signatureIsValid = verifyFunction.verify(PUB_KEY, jwtSignatureBase64, 'base64');
     if (signatureIsValid) {
-      let userProfile = new UserProfile;
-      userProfile = Object.assign(
+      const userProfile: UserProfile = Object.assign(
         {[securityId]: '', name: ''},
       );
       return userProfile;
