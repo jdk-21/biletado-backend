@@ -1,10 +1,10 @@
 //import {inject} from '@loopback/context';
-import {HttpErrors, Request} from '@loopback/rest';
 import {AuthenticationStrategy} from '@loopback/authentication';
+import {HttpErrors, Request} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import axios from 'axios';
-import * as crypto from 'crypto';
 import base64 from 'base64url';
+import * as crypto from 'crypto';
 
 export class JWTAuthenticationStrategy implements AuthenticationStrategy {
   name = 'jwt';
@@ -12,7 +12,7 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
   async authenticate(request: Request): Promise<UserProfile | undefined> {
     const token: string = this.extractCredentials(request);
     const verifyFunction = crypto.createVerify('RSA-SHA256');
-    let response = await axios.get("localhost/auth/realms/biletado").then(
+    const response = await axios.get("localhost/auth/realms/biletado").then(
       res => {
         return res
       }
@@ -28,7 +28,7 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     const jwtSignatureBase64 = base64.toBase64(jwtSignature);
     const signatureIsValid = verifyFunction.verify(PUB_KEY, jwtSignatureBase64, 'base64');
     if (signatureIsValid) {
-      let userProfile: UserProfile;
+      let userProfile = new UserProfile;
       userProfile = Object.assign(
         {[securityId]: '', name: ''},
       );

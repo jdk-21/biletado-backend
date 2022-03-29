@@ -60,14 +60,13 @@ export class BuildingsController {
     }
   }
 
-  //@authenticate('jwt')
+  @authenticate('jwt')
   @get('/assets/buildings/count')
   @response(200, {
     description: 'Buildings model count',
     content: {'application/json': {schema: CountSchema}},
   })
   async count(
-    @authenticate('jwt')
     @param.where(Buildings) where?: Where<Buildings>,
   ): Promise<Count> {
     return this.buildingsRepository.count(where);
