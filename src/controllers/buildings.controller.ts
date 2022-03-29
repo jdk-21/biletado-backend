@@ -59,6 +59,7 @@ export class BuildingsController {
     }
   }
 
+  @authenticate('jwt')
   @get('/assets/buildings/count')
   @response(200, {
     description: 'Buildings model count',
