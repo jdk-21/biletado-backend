@@ -1,13 +1,15 @@
+import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
-import {
-  RestExplorerBindings,
-  RestExplorerComponent,
-} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent
+} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {JWTAuthenticationStrategy} from './authentication-strategies/jwt-strategy';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -18,6 +20,7 @@ export class BiletadoBackendApplication extends BootMixin(
   constructor(options: ApplicationConfig = {}) {
     super(options);
 
+    this.component(AuthenticationComponent);
     // Set up the custom sequence
     this.sequence(MySequence);
 
@@ -40,5 +43,6 @@ export class BiletadoBackendApplication extends BootMixin(
         nested: true,
       },
     };
+    registerAuthenticationStrategy(this, JWTAuthenticationStrategy);
   }
 }
