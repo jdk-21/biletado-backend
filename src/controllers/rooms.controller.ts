@@ -128,7 +128,7 @@ export class RoomsController {
         return res
       }
     );
-    if (response.data.length === 0 || response.data === "null" || response.data === null) {
+    if (response.data === null || response.data.length === 0 || response.data === "null") {
       await this.roomsRepository.deleteById(id);
     } else {
       throw new HttpErrors.UnprocessableEntity("Not empty");
