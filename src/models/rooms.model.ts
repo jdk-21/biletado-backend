@@ -18,14 +18,8 @@ export class Rooms extends Entity {
   })
   name: string;
 
-  @property({
-    type: 'string',
-    required: true,
-  })
-  storey_id: string;
-
   @belongsTo(() => Storeys, {name: 'storeys_id_relation'})
-  storeys_id: string;
+  storey_id: string;
 
   constructor(data?: Partial<Rooms>) {
     super(data);
