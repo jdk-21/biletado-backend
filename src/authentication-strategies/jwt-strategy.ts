@@ -10,8 +10,8 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
     const token: string = this.extractCredentials(request);
-    //  const keyurl: string = "http://" + process.env.KEYCLOAK_HOST + "/auth/realms/" + process.env.KEYCLOAK_REALM;
-    const response = await axios.get("http://localhost/auth/realms/biletado").then(
+    const keyurl: string = "http://" + process.env.KEYCLOAK_HOST + "/auth/realms/" + process.env.KEYCLOAK_REALM;
+    const response = await axios.get(keyurl).then(
       res => {
         return res
       }
