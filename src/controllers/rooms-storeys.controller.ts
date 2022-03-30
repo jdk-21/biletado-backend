@@ -18,7 +18,7 @@ export class RoomsStoreysController {
     public roomsRepository: RoomsRepository,
   ) { }
 
-  @get('/rooms/{id}/storeys', {
+  @get('/assets/rooms/{id}/storeys', {
     'x-visibility': 'undocumented',
     responses: {
       '200': {
