@@ -20,27 +20,27 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     );
     const PUB_KEY = "-----BEGIN PUBLIC KEY-----\n" + response.data.public_key + "\n-----END PUBLIC KEY-----";
 
-  try{
-    const jwtHeader = token.split('.')[0];
-    const jwtPayload = token.split('.')[1];
-    const jwtSignature = token.split('.')[2];
-    verifyFunction.write(jwtHeader + '.' + jwtPayload);
-    verifyFunction.end();
-    const jwtSignatureBase64 = base64.toBase64(jwtSignature);
-    const signatureIsValid = verifyFunction.verify(PUB_KEY, jwtSignatureBase64, 'base64');
-    if (signatureIsValid) {
-      const userProfile: UserProfile = Object.assign(
-        {[securityId]: '', name: ''},
-      );
-      return userProfile;
-    } else {
+    try {
+      const jwtHeader = token.split('.')[0];
+      const jwtPayload = token.split('.')[1];
+      const jwtSignature = token.split('.')[2];
+      verifyFunction.write(jwtHeader + '.' + jwtPayload);
+      verifyFunction.end();
+      const jwtSignatureBase64 = base64.toBase64(jwtSignature);
+      const signatureIsValid = verifyFunction.verify(PUB_KEY, jwtSignatureBase64, 'base64');
+      if (signatureIsValid) {
+        const userProfile: UserProfile = Object.assign(
+          {[securityId]: '', name: ''},
+        );
+        return userProfile;
+      } else {
+        throw new HttpErrors.Unauthorized(`Authorization failed.`);
+      }
+    }
+    catch {
       throw new HttpErrors.Unauthorized(`Authorization failed.`);
     }
   }
-  catch{
-      throw new HttpErrors.Unauthorized(`Authorization failed.`);
-  }
-}
 
   extractCredentials(request: Request): string {
     if (!request.headers.authorization) {
@@ -50,7 +50,7 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     // for example: Bearer xxx.yyy.zzz
     const authHeaderValue = request.headers.authorization;
 
-    if (!authHeaderValue.startsWith('Bearer')) {
+    if (!authHeaderValue.startsWith('Bearer') || !authHeaderValue.startsWith('bearer')) {
       throw new HttpErrors.Unauthorized(
         `Authorization header is not of type 'Bearer'.`,
       );
