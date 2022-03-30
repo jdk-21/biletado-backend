@@ -19,7 +19,7 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     const PUB_KEY = "-----BEGIN PUBLIC KEY-----\n" + response.data.public_key + "\n-----END PUBLIC KEY-----";
 
     try {
-      let verifiedJwt = nJwt.verify(token, PUB_KEY, 'RS256')
+      nJwt.verify(token, PUB_KEY, 'RS256');
       const userProfile: UserProfile = Object.assign(
         {[securityId]: '', name: ''},
       );
@@ -28,8 +28,8 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     } catch (e) {
       console.log(e);
       throw new HttpErrors.Unauthorized(`Authorization failed.`);
-      }
     }
+  }
 
   extractCredentials(request: Request): string {
     if (!request.headers.authorization) {
