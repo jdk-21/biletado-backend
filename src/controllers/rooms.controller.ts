@@ -123,7 +123,8 @@ export class RoomsController {
     description: 'Rooms DELETE success',
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
-    const response = await axios.get("http://traefik/api/reservations/?room_id=" + id).then(
+    const reservations_url = process.env.RERVATIONS_ENDPOINT ?? 'traefik/api/reservations'
+    const response = await axios.get("http://" + reservations_url + "/?room_id=" + id).then(
       res => {
         return res
       }
