@@ -48,7 +48,7 @@ export class StoreysController {
     storeys: Storeys,
   ): Promise<Storeys> {
     let exists = await this.storeysRepository.find({where: {id: storeys.id}});
-    if (storeys.id != undefined && exists.length > 0) {
+    if (storeys.id !== undefined && exists.length > 0) {
 
       await this.storeysRepository.replaceById(storeys.id, storeys);
       return storeys;
