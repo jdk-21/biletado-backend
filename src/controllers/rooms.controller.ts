@@ -29,7 +29,7 @@ export class RoomsController {
   ) { }
 
   @authenticate('jwt')
-  @post('/rooms')
+  @post('/assets/rooms')
   @response(200, {
     description: 'Rooms model instance',
     content: {'application/json': {schema: getModelSchemaRef(Rooms)}},
@@ -60,7 +60,7 @@ export class RoomsController {
     }
   }
 
-  @get('/rooms/count')
+  @get('/assets/rooms/count')
   @response(200, {
     description: 'Rooms model count',
     content: {'application/json': {schema: CountSchema}},
@@ -71,7 +71,7 @@ export class RoomsController {
     return this.roomsRepository.count(where);
   }
 
-  @get('/rooms')
+  @get('/assets/rooms')
   @response(200, {
     description: 'Array of Rooms model instances',
     content: {
@@ -89,7 +89,7 @@ export class RoomsController {
     return this.roomsRepository.find(filter);
   }
 
-  @get('/rooms/{id}')
+  @get('/assets/rooms/{id}')
   @response(200, {
     description: 'Rooms model instance',
     content: {
@@ -106,7 +106,7 @@ export class RoomsController {
   }
 
   @authenticate('jwt')
-  @put('/rooms/{id}')
+  @put('/assets/rooms/{id}')
   @response(204, {
     description: 'Rooms PUT success',
   })
@@ -118,7 +118,7 @@ export class RoomsController {
   }
 
   @authenticate('jwt')
-  @del('/rooms/{id}')
+  @del('/assets/rooms/{id}')
   @response(204, {
     description: 'Rooms DELETE success',
   })
