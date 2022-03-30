@@ -46,17 +46,14 @@ export class RoomsController {
     })
     rooms: Rooms,
   ): Promise<Rooms> {
-    if (rooms.id === undefined) {
-      this.response.status(201);
-      return this.roomsRepository.create(rooms);
+    let exists = await this.roomsRepository.find({where: {id: rooms.id}});
+    if (rooms.id != undefined && exists.length > 0) {
+
+      await this.roomsRepository.replaceById(rooms.id, rooms);
+      return rooms;
     }
     else {
-      console.log("blub");
-      // workaround because this is not a standard operation
-      // behaves like put
-      await this.roomsRepository.replaceById(rooms.id, rooms);
-      this.response.status(200);
-      return rooms;
+      return this.roomsRepository.create(rooms);
     }
   }
 

@@ -47,17 +47,14 @@ export class StoreysController {
     })
     storeys: Storeys,
   ): Promise<Storeys> {
-    if (storeys.id === undefined) {
-      this.response.status(201);
-      return this.storeysRepository.create(storeys);
+    let exists = await this.storeysRepository.find({where: {id: storeys.id}});
+    if (storeys.id != undefined && exists.length > 0) {
+
+      await this.storeysRepository.replaceById(storeys.id, storeys);
+      return storeys;
     }
     else {
-      console.log("blub");
-      // workaround because this is not a standard operation
-      // behaves like put
-      await this.storeysRepository.replaceById(storeys.id, storeys);
-      this.response.status(200);
-      return storeys;
+      return this.storeysRepository.create(storeys);
     }
   }
 

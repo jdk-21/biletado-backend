@@ -29,7 +29,7 @@ export class BuildingsController {
     @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
-  @authenticate('jwt')
+  //  @authenticate('jwt')
   @post('/assets/buildings')
   @response(200, {
     description: 'Buildings model instance',
@@ -47,18 +47,17 @@ export class BuildingsController {
     })
     buildings: Buildings,
   ): Promise<Buildings> {
-    if (buildings.id === undefined) {
-      this.response.status(201);
-      return this.buildingsRepository.create(buildings);
-    }
-    else {
-      // workaround because this is not a standard operation
-      // behaves like put
+    let exists = await this.buildingsRepository.find({where: {id: buildings.id}});
+    if (buildings.id != undefined && exists.length > 0) {
+
       await this.buildingsRepository.replaceById(buildings.id, buildings);
-      this.response.status(200);
       return buildings;
     }
+    else {
+      return this.buildingsRepository.create(buildings);
+    }
   }
+
 
   @get('/assets/buildings/count')
   @response(200, {
