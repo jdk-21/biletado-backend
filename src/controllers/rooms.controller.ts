@@ -126,6 +126,8 @@ export class RoomsController {
     const reservations_url = process.env.RESERVATIONS_ENDPOINT ?? 'traefik/api/reservations';
     const traceHeaderName = process.env.JAEGER_TRACECONTEXTHEADERNAME ?? 'Uber-Trace-Id';
     axios.defaults.headers.common[traceHeaderName] = traceHeader;
+    console.log(traceHeaderName);
+    console.log(traceHeader);
     const response = await axios.get("http://" + reservations_url + "/?room_id=" + id).then(
       res => {
         return res
