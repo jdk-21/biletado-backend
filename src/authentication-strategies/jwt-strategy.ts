@@ -3,17 +3,15 @@ import {AuthenticationStrategy} from '@loopback/authentication';
 import {HttpErrors, Request} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import axios from 'axios';
-import base64 from 'base64url';
-import * as crypto from 'crypto';
+import * as nJwt from 'njwt';
 
 export class JWTAuthenticationStrategy implements AuthenticationStrategy {
   name = 'jwt';
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
     const token: string = this.extractCredentials(request);
-    const verifyFunction = crypto.createVerify('RSA-SHA256');
-    const keyurl: string = "http://" + process.env.KEYCLOAK_HOST + "/auth/realms/" + process.env.KEYCLOAK_REALM;
-    const response = await axios.get(keyurl).then(
+    //  const keyurl: string = "http://" + process.env.KEYCLOAK_HOST + "/auth/realms/" + process.env.KEYCLOAK_REALM;
+    const response = await axios.get("http://localhost/auth/realms/biletado").then(
       res => {
         return res
       }
@@ -21,26 +19,17 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     const PUB_KEY = "-----BEGIN PUBLIC KEY-----\n" + response.data.public_key + "\n-----END PUBLIC KEY-----";
 
     try {
-      const jwtHeader = token.split('.')[0];
-      const jwtPayload = token.split('.')[1];
-      const jwtSignature = token.split('.')[2];
-      verifyFunction.write(jwtHeader + '.' + jwtPayload);
-      verifyFunction.end();
-      const jwtSignatureBase64 = base64.toBase64(jwtSignature);
-      const signatureIsValid = verifyFunction.verify(PUB_KEY, jwtSignatureBase64, 'base64');
-      if (signatureIsValid) {
-        const userProfile: UserProfile = Object.assign(
-          {[securityId]: '', name: ''},
-        );
-        return userProfile;
-      } else {
-        throw new HttpErrors.Unauthorized(`Authorization failed.`);
+      let verifiedJwt = nJwt.verify(token, PUB_KEY, 'RS256')
+      const userProfile: UserProfile = Object.assign(
+        {[securityId]: '', name: ''},
+      );
+      return userProfile;
+
+    } catch (e) {
+      console.log(e);
+      throw new HttpErrors.Unauthorized(`Authorization failed.`);
       }
     }
-    catch {
-      throw new HttpErrors.Unauthorized(`Authorization failed.`);
-    }
-  }
 
   extractCredentials(request: Request): string {
     if (!request.headers.authorization) {
