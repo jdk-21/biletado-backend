@@ -12,11 +12,12 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, post, put, requestBody,
   Response,
   response,
   RestBindings
 } from '@loopback/rest';
+import axios from 'axios';
 import {Rooms} from '../models';
 import {RoomsRepository} from '../repositories';
 
@@ -122,6 +123,15 @@ export class RoomsController {
     description: 'Rooms DELETE success',
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
-    await this.roomsRepository.deleteById(id);
+    const response = await axios.get("http://backend-reservations/api/reservations/?room_id=" + id).then(
+      res => {
+        return res
+      }
+    );
+    if (response.data.length === 0 || response.data === "null" || response.data === null) {
+      await this.roomsRepository.deleteById(id);
+    } else {
+      throw new HttpErrors.UnprocessableEntity("Not empty");
+    }
   }
 }

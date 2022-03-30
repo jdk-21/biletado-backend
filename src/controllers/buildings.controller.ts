@@ -52,7 +52,6 @@ export class BuildingsController {
       return this.buildingsRepository.create(buildings);
     }
     else {
-      console.log("blub");
       // workaround because this is not a standard operation
       // behaves like put
       await this.buildingsRepository.replaceById(buildings.id, buildings);
