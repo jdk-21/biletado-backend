@@ -6,44 +6,10 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  KEYCLOAK_HOST: "traefik"
-  KEYCLOAK_REALM: "biletado"
-  POSTGRES_ASSETS_USER: "postgres"
-  POSTGRES_ASSETS_PASSWORD: "postgres"
-  POSTGRES_ASSETS_DBNAME: "assets"
-  POSTGRES_ASSETS_HOST: "postgres"
-  POSTGRES_ASSETS_PORT: 5432
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-    container: node:latest
-    # service containers to run with `postgres-job`
-    services:
-      # label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:latest
-        # service environment variables
-        # `POSTGRES_HOST` is `postgres`
-        env:
-          # optional (defaults to `postgres`)
-          POSTGRES_DB: postgres
-          # required
-          POSTGRES_PASSWORD: postgres
-          # optional (defaults to `5432`)
-          #POSTGRES_PORT: 5432
-          # optional (defaults to `postgres`)
-          #POSTGRES_USER: postgres
-        ports:
-          # maps tcp port 5432 on service container to the host
-          - 5432:5432
-        # set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       # Checkout the Repo
       - uses: actions/checkout@v2
@@ -59,12 +25,6 @@ jobs:
       - run: npm run lint:fix
       # Run tests
       - run: npm run test
-      # Docker Hub image that `postgres-job` executes in
-      - run: npm start
-      # Run postman tests
-      - uses: matt-ball/newman-action@master
-        with:
-          collection: tests/Biletado Docker_Compose_Collection_postman_collection.json
   build-and-push-image:
     needs: tests
     runs-on: ubuntu-latest
