@@ -12,7 +12,7 @@ env:
   POSTGRES_ASSETS_PASSWORD: "postgres"
   POSTGRES_ASSETS_DBNAME: "assets"
   POSTGRES_ASSETS_HOST: "postgres"
-  POSTGRES_ASSETS_PORT: "5432"
+  POSTGRES_ASSETS_PORT: 5432
 
 jobs:
   tests:
@@ -32,7 +32,7 @@ jobs:
           # required
           POSTGRES_PASSWORD: postgres
           # optional (defaults to `5432`)
-          POSTGRES_PORT: postgres
+          POSTGRES_PORT: 5432
           # optional (defaults to `postgres`)
           POSTGRES_USER: postgres
         ports:
