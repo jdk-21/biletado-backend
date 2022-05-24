@@ -29,7 +29,7 @@ export class BuildingsController {
     @inject(RestBindings.Http.RESPONSE) protected response: Response,
   ) { }
 
-  //  @authenticate('jwt')
+  @authenticate('jwt')
   @post('/assets/buildings')
   @response(200, {
     description: 'Buildings model instance',
