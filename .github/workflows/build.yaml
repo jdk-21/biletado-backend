@@ -17,24 +17,6 @@ env:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    steps:
-      # Checkout the Repo
-      - uses: actions/checkout@v2
-
-      # Install Node 16
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
-
-      # Install dependencies
-      - run: npm install
-      - run: npm run lint:fix
-      # Run tests
-      - run: npm run test
-      # Docker Hub image that `postgres-job` executes in
-    container: node:latest
-
     # service containers to run with `postgres-job`
     services:
       # label used to access the service container
@@ -61,6 +43,25 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    steps:
+      # Checkout the Repo
+      - uses: actions/checkout@v2
+
+      # Install Node 16
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      # Install dependencies
+      - run: npm install
+      - run: npm run lint:fix
+      # Run tests
+      - run: npm run test
+      # Docker Hub image that `postgres-job` executes in
+    container: node:latest
+
+
 
       - run: npm start
       # Run postman tests
