@@ -25,7 +25,7 @@ jobs:
       - run: npm run lint:fix
       # Run tests
       - run: npm run test
-      - run: npm run
+      - run: npm start
       # Run postman tests
       - uses: matt-ball/newman-action@master
         with:
