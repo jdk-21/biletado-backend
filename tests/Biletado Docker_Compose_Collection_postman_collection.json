@@ -1,0 +1,17 @@
+{
+	"info": {
+		"_postman_id": "8d737cbd-ed9e-4177-ab37-bec0df69479a",
+		"name": "Biletado Docker Compose Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Buildings",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

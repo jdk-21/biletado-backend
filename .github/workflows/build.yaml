@@ -25,6 +25,11 @@ jobs:
       - run: npm run lint:fix
       # Run tests
       - run: npm run test
+      - run: npm run
+      # Run postman tests
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: tests/Biletado Docker_Compose_Collection_postman_collection.json
   build-and-push-image:
     needs: tests
     runs-on: ubuntu-latest
