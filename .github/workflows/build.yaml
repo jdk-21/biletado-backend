@@ -8,8 +8,8 @@ env:
   IMAGE_NAME: ${{ github.repository }}
   KEYCLOAK_HOST: "traefik"
   KEYCLOAK_REALM: "biletado"
-  POSTGRES_ASSETS_USER: postgres
-  POSTGRES_ASSETS_PASSWORD: postgres
+  POSTGRES_ASSETS_USER: "postgres"
+  POSTGRES_ASSETS_PASSWORD: "postgres"
   POSTGRES_ASSETS_DBNAME: "assets"
   POSTGRES_ASSETS_HOST: "postgres"
   POSTGRES_ASSETS_PORT: "5432"
